@@ -269,3 +269,36 @@ select to_char('1234','9999.99') from dual;
 select to_char(salary,'$9999999.99') from emp;
 select to_char(dob,'dd/Mon/yyyy') from emp where extract( year from dob)>2001;
 
+select upper(concat(empname,salary)) from emp;
+
+select case extract( year from dob) 
+when 2001 then '2001-2002'
+when 2002 then '2001-2003'
+else 'Not a Valid year'
+
+
+
+end "Calander_Year" --from emp
+,
+count(empid) from emp
+;
+
+select * from employee;
+
+select empid, empname,deptid salary from emp
+union 
+Select empid, empname,deptid salary from Employee
+
+select empid, empname,deptid salary from emp
+union all
+Select empid, empname,deptid salary from Employee
+
+select empid, empname,deptid salary from emp
+intersect
+Select empid, empname,deptid salary from Employee
+
+select empid, empname,deptid salary from emp
+minus
+Select empid, empname,deptid salary from Employee
+select * from employee
+
