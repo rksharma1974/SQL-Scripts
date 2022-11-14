@@ -295,10 +295,97 @@ Select empid, empname,deptid salary from Employee
 
 select empid, empname,deptid salary from emp
 intersect
-Select empid, empname,deptid salary from Employee
+Select empid, empname,deptid salary from Employee;
 
 select empid, empname,deptid salary from emp
 minus
-Select empid, empname,deptid salary from Employee
-select * from employee
+Select empid, empname,deptid salary from Employee;
+select * from employee;
+
+select deptid,designation,sum(salary) from emp
+group by rollup(deptid,designation);
+
+select deptid,designation,sum(salary) from emp
+group by cube(deptid,designation);
+
+select deptid,designation,sum(salary) from emp
+group by Grouping Sets((deptid,designation),null);
+order by deptid, designation
+
+select
+case grouping(deptid)
+when 0 then to_char(deptid)
+when 1 then 'All Departments'
+end deptid,
+case grouping(designation)
+when 0 then to_char(designation)
+when 1 then 'All Designations'
+end designation
+,sum(salary)
+from emp
+group by rollup(deptid,designation)
+
+alter table emp
+add levelid int;
+
+update emp set levelid=1 where designation='Manager';
+update emp set levelid=2 where designation='Executive';
+
+select * from emp;
+
+Select Empid, empname, managerid, levelid from emp 
+start with empid=1
+connect by Prior empid=managerid
+order by levelid
+
+update emp set managerid=9 where managerid is null;
+
+
+CREATE OR REPLACE PROCEDURE greetings 
+AS 
+BEGIN 
+   dbms_output.put_line('Hello World!'); 
+END; 
+/
+
+exec greetings;
+
+CREATE OR REPLACE PROCEDURE employeedata(
+emp_id in out varchar2, empname out varchar2,salary out number)
+as
+begin
+   select empid,  empname,salary into emp_id,  empname,salary  from emp
+   where empid=emp_id; 
+end; 
+/
+declare 
+emp_id  Emp.Empid%TYPE;
+empname Emp.Empname%TYPE;
+salary  Emp.salary%TYPE;
+begin
+emp_id:=1;
+employeedata(emp_id,empname,salary);
+DBMS_OUTPUT.PUT_LINE('Employee Id'||emp_id);
+DBMS_OUTPUT.PUT_LINE('Employee Name'||empname);
+DBMS_OUTPUT.PUT_LINE('Employee Salary'||Salary);
+end;
+/
+
+
+
+
+create or replace procedure remove_emp(emp_id   Varchar2)as
+tot_emps Number;
+begin
+Delete from Emp where empid=emp_id;
+tot_emps:=tot_emps-1;
+end;
+/
+
+
+
+
+
+
+
 
