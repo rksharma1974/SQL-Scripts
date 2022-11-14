@@ -1,0 +1,233 @@
+Create Table Employee
+(
+ empid varchar(10) primary key,
+ empname varchar(100),
+ salary decimal(15,2),
+ Dob date,
+ deptid int)
+ ;
+ drop table employee;
+
+Create Table Emp
+( 
+ Empid varchar2(10) primary key,
+ Empname varchar2 (200),
+ dob date  ,
+ doj date,
+ Designation varchar2(50),
+ Deptid int,
+ locat varchar2(60),
+ Salary decimal(18,2)
+ );
+ 
+Create TABLE Department
+(
+ Deptid int,
+ Dname varchar2(60)
+ );
+ 
+ Create Table LeaveRecord
+ (
+ Empid varchar2(10),
+ CasualLeave int,
+ EL int,
+ pl int,
+ SL int,
+ ML int,
+ PTL int,
+ LWP int,
+ Totalnoofdays int
+ )
+;
+/* you can add comments here
+*/
+alter table emp
+add mobileno varchar(12);
+ desc emp;
+ alter table emp
+ drop column doj;
+ 
+ alter table emp
+ add doj date default sysdate;
+ 
+alter table emp
+ drop column locat;
+ 
+ alter table emp
+ add locat varchar2(60) default 'Hyderabad';
+ desc Emp;
+
+ select * from emp;
+
+alter table emp
+add  job_id varchar2(9);
+alter table emp
+rename column job_id to  jobid; 
+
+drop table department;
+
+Create TABLE Department
+(
+ Deptid int,
+ Dname varchar2(60), Constraint pk_dept primary key (Deptid)
+ );
+alter table emp
+add Email varchar(250);
+
+alter table emp
+add constraint unique_email unique (Email);
+
+desc emp
+
+insert into emp values ( '1', 'Isha','01/Jan/2002','Executive',1,50000,'1234567890',default,default,'1','Isha@abc.com');
+-- date on online is 01/jan/02
+
+insert into emp (empid,empname,salary,doj) values('2','Pawan',80000,default);
+
+select * from Department;
+
+insert into Department(Deptid,Dname) values('&Deptid','&Dname');
+
+insert into department values(1,'Finance');
+insert into department values(2,'IT');
+insert into department values(3,'R&D');
+insert into department values(4,'Sales');
+insert into department values(5,'Marketing');
+insert into department values(6,'Admin');
+
+insert into emp (empid,empname,salary,deptid) values('3','Fatima',80000,4);
+
+delete from emp where empid='3';
+
+alter  Table emp
+add constraint fk_Deptid Foreign key (Deptid)
+references Department(Deptid);
+
+select * from emp;
+alter Table emp
+add Constraint check_Sal check  (salary>0);
+insert into emp (empid,empname,salary,deptid) values('4','Shravanthi',100000,4);
+Create Table employee
+(
+Empid varchar2(10) Constraint Pk_Emp PRimary key,
+empname varchar2(200) constraint name_notnull not null,
+deptid int  ,
+salary decimal(18,2) check (salary>0),
+constraint fk_deptid1 foreign key (deptid) references Department(deptid)
+);
+insert  into employee values(6,'Alok', 1, 40000);
+delete from employee where empid=1;
+
+insert  into employee values(5,'Ashok', 1, 40000);
+insert into emp (Empid,empname,deptid,salary)
+select Empid,empname,deptid,salary from Employee;
+select * from Emp;
+update emp  set dob='01/oct/02', designation='Executive', Deptid=2 where empid=2;
+alter table employee
+add bonus decimal(18,2);
+
+merge into employee  b
+using (select empid,empname,salary, deptid from emp
+where deptid=1) e
+on (b.empid=e.empid)
+when matched then
+update set b.bonus=b.bonus+e.salary *.5
+delete where (e.salary>80000)
+when not matched then
+insert (b.empid,b.bonus)
+values (e.empid,e.salary*.5)
+where (e.salary<=80000);
+end;
+
+delete from emp where empid=5;
+rollback
+select * from emp;
+
+select * from Tab;
+
+--drop table Leaverecord;
+select * from emp;
+desc emp;
+insert into emp values ( '3', 'Sanchit'  , '09/Feb/2001','Manager',1,200000,              '1234567890',      default,default, '2',  'Sanchit @abc.com'   );
+insert into emp values ( '5', 'Sangeeta' ,'18/Mar/2003','Manager',2,200000,               '1234567890',     default,default, '2', 'Sangeeta@abc.com' );
+insert into emp values ( '7', 'Nitin'    ,   '01/April/2001','Manager',3,200000,           '1234567890',   default,default, '2',  'Nitin@abc.com'       );
+insert into emp values ( '8', 'Isha'     ,    '01/May/2002','Manager',4,250000,           '1234567890',     default,default, '2', 'Isha1@abc.com'       );
+insert into emp values ( '9', 'Sunil'    ,   '11/Jan/2001','Manager',5,250000,           '1234567890',    default,default, '3',  'Sunil@abc.com')  ;     
+insert into emp values ( '10', 'Suhail'  ,  '20/Feb/2002','Executive',1,60000,           '1234567890',    default,default, '3' ,'Suhail@abc.com');    
+insert into emp values ( '11', 'Raksha'  ,  '28/Feb/2001','Executive',2,70000,             '1234567890',    default,default, '3',    'Raksha@abc.com'   );
+insert into emp values ( '12', 'Deepak'    ,  '01/Feb/2001','Executive',2,400000,          '1234567890',  default,default, '3' , 'Deepak@abc.com');  
+insert into emp values ( '13', 'Kalpit'  ,  '19/Dec/2001','Executive',3,30000,             '1234567890',   default,default, '1','Kalpit@abc.com')  ;
+
+update emp set empname='Sunita' where empid=8;
+update emp set Email= concat(empname , '@abc.com');
+update emp set dob='18/Sep/2002' where empid=6;
+update emp set designation='Executive' where empid=5;
+update emp set designation='Executive' where empid=4;
+update emp set designation='Executive' where empid=6;
+--drop table Emp;
+--drop table Employee;
+--drop Table Department;
+--drop Table LeaveRecord;
+--- sum, average, min, max, count
+select deptid,  sum(salary) as "Sum of Salary"  from Emp
+group by deptid
+order by deptid
+;
+select deptid,  sum(salary) as "Sum of Salary"  from Emp
+group by deptid
+having Sum(salary)>300000
+order by deptid
+;
+
+Select min(Salary) from emp;
+
+Select max(Salary) from emp;
+
+Select max(Salary) from emp
+where salary < (Select max(salary) from emp)
+;
+
+select deptid, count(*) from emp
+group by Deptid
+;
+select * from Emp
+where dob between '01/jan/2001' and '31/dec/2001';
+
+select * from emp where empname like'S%';
+select upper(empname) from Emp;
+select lower(empname) from Emp;
+select * from emp where empname like'S_h%';
+--Display all the  names starting with A,B,C,D
+
+select * from emp where deptid in (1,2,5)
+
+select nvl(salary,0) from emp;
+
+Select e.empid, e.empname, e.salary , d.dname 
+from emp e, department d
+where e.deptid=d.deptid;
+
+Select e.empid, e.empname, e.salary , d.dname 
+from emp e Natural join Department d;
+
+Select e.empid, e.empname, e.salary , d.dname 
+from emp e  join Department d 
+Using(deptid);
+
+alter table emp
+drop constraint fk_deptid;
+
+insert into emp values ( '14', 'Murgan'  , '09/Feb/2001','Manager',9,200000,              '1234567890',      default,default, '2',  'Sanchit @abc.com'   );
+insert into department  values(12, 'HR')
+
+Select e.empid, e.empname, e.salary , d.dname 
+from emp e left outer join Department d 
+on e.deptid=d.deptid
+
+Select e.empid, e.empname, e.salary , d.dname 
+from emp e right outer join Department d 
+on e.deptid=d.deptid
+
+Select e.empid, e.empname, e.salary , d.dname 
+from emp e Full outer join Department d 
+on e.deptid=d.deptid
